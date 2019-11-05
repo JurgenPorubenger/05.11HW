@@ -4,6 +4,8 @@ const Ajv = require('ajv');
 const userModel = require('../model/Users');
 const userSchema = require('../schemas/userSchema');
 const ajv = new Ajv();
+const jwt = require('jsonwebtoken');
+
 
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -49,29 +51,37 @@ router.post('/registration', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-    const{firstName,password}=req.body;
-    function comparePwd(loginPwd,dbPwd) {
-        if (loginPwd.split("").reverse().join("") === dbPwd) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    userModel.findOne({firstName:firstName})
-        .then(data=>{
-            console.log(`${(data)} jjj`);
-            if(data) {
-                console.log('DATA'+data);
-               if (comparePwd(password, data.pwd)){
-                   res.json(JSON.stringify(data));
-               } else {
-                   res.json(JSON.stringify({massage:'PWDs not match!'}));
-               }
-            } else {
-                res.json(JSON.stringify({massage:'You need registration'}));
-            }
+    jwt.sign(req.body, 'privateKey', { algorithm: 'RS256' }, function(err, token) {
+        console.log(token);
+        res.json({
+            token:token
         });
+        console.log(token);
+    });
+
+    // const{firstName,password}=req.body;
+    // function comparePwd(loginPwd,dbPwd) {
+    //     if (loginPwd.split("").reverse().join("") === dbPwd) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+    //
+    // userModel.findOne({firstName:firstName})
+    //     .then(data=>{
+    //         if(data) {
+    //             // console.log('DATA'+data);
+    //            if (comparePwd(password, data.password)){
+    //                res.json(JSON.stringify(data));
+    //            } else {
+    //                res.json(JSON.stringify({massage:'PWDs not match!'}));
+    //            }
+    //         } else {
+    //             res.json(JSON.stringify({massage:'You need registration'}));
+    //         }
+    //     });
 });
 
 
