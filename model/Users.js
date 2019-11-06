@@ -30,18 +30,15 @@ LogSchema.methods.setPassword = async function(password) {
         }
 };
 
-LogSchema.methods.comparePassword = async function(password) {
-        let saltRound = 10;
-        try {
-                let a = await bcrypt.genSalt(saltRound);
-                let b = await bcrypt.hash(password, a);
-                return password == b;
 
-        } catch (e) {
-                return e;
-        }
-
-}
+LogSchema.methods.comparePassword = async function(password, cb) {
+        await bcrypt.compare(password, this.password, function(err, isMatch) {
+                if (err) {
+                        return cb(err, false);
+                }
+                return cb(null, isMatch);
+        });
+};
 
 // LogSchema.methods.reversePassword = function () {
 //         return this.password.split("").reverse().join("");

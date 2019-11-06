@@ -41,7 +41,6 @@ router.post('/registration', async function(req, res, next) {
                 phone:phone
             });
         User.password = await User.setPassword(password);
-        console.log(await User.setPassword(password)+'setPassword');
         await User.save()
             .then(data => {
                 console.log(data+'SAVE');
