@@ -53,6 +53,15 @@ userSchema.methods.setPassword = async function(password) {
 //
 // }
 
+// LogSchema.methods.comparePassword = async function(password, cb) {
+//         await bcrypt.compare(password, this.password, function(err, isMatch) {
+//                 if (err) {
+//                         return cb(err, false);
+//                 }
+//                 return cb(null, isMatch);
+//         });
+// };
+
 // LogSchema.methods.reversePassword = function () {
 //         return this.password.split("").reverse().join("");
 // };
