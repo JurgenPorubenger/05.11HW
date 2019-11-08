@@ -40,6 +40,7 @@ router.post('/registration', async function(req, res, next) {
 
 
 router.post('/login', async function(req, res, next) {
+    console.log(req.body);
     const{email,password}=req.body;
     const ajv = new Ajv();
     const validate = ajv.compile(loginValidation);
@@ -53,21 +54,13 @@ router.post('/login', async function(req, res, next) {
     if(!userExist) return res.status(400).send('Email was found, try again');
 
     const validPassword = await bcrypt.compare(password, userExist.password);
+    console.log(validPassword);
     if(!validPassword) return res.status(400).send('Invalid password');
-    res.send('Loggged in :)')
+    await res.json(`${userExist.firstName} login successful!`)
 
 });
-
-
 
 
 module.exports = router;
 
 
-// let saltRounds = 10;
-// bcrypt.genSalt(saltRounds,function (err,salt) {
-//     console.log(salt);
-//     bcrypt.hash(password, salt, function (err, hash) {
-//         console.log('HASH:'+hash);
-//     })
-// });

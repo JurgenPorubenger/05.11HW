@@ -9,7 +9,7 @@ const registerValidation = {
         'email': {
             'format':'email'
         },
-        'pwd': {
+        'password': {
             'type': ['string', 'number'],
         },
     },
@@ -21,7 +21,7 @@ const loginValidation = {
         'email': {
             'format':'email'
         },
-        'pwd': {
+        'password': {
             'type': ['string', 'number'],
         },
     },

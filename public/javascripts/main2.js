@@ -7,14 +7,13 @@ document.querySelector("#log_btn").addEventListener("click", function (e) {
         // получаем данные формы
         let logEmail = document.querySelector('#log_email').value;
         let logPwd = document.querySelector('#log_pwd').value;
-        // let direction = JSON.stringify({way});
 
         let formLogin= {
             email:logEmail,
             password:logPwd,
         };
 
-        fetch('/user/login', {
+        fetch('/api/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
