@@ -50,17 +50,18 @@ router.post('/login', async function(req, res, next) {
     if(!valid) return  res.status(400).send(errors);
 
     const userExist = await UserModel.findOne({email});
-    console.log(userExist);
     if(!userExist) return res.status(400).send('Email was found, try again');
 
     const validPassword = await bcrypt.compare(password, userExist.password);
-    console.log(validPassword);
     if(!validPassword) return res.status(400).send('Invalid password');
-    await res.json(`${userExist.firstName} login successful!`)
 
+    const token = await jwt.sign({_id: userExist.id}, process.env.TOKEN_SECRET);
+    await res.header('auth-token', token).json(token);
 });
 
 
 module.exports = router;
 
 
+// const token = jwt.sign({_id: userExist.id});
+// await res.header('auth-token', token).json(token);
