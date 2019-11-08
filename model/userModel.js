@@ -1,47 +1,57 @@
 const mongoose = require('mongoose');
-const  Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
 
+const userSchema = new mongoose.Schema({
+        firstName: {
+                type: String,
+                required: true,
+                min: 2,
+                max: 255
+        },
+        email: {
+                type: String,
+                required: true,
+                min: 6,
+                max: 255
+        },
+        password: {
+                type: String,
+                required: true,
+                min: 2,
+                max: 1024
+        },
+        date: {
+                type: Date,
+                default: Date.now
+        }
 
-
-
-const LogSchema = new Schema({
-        firstName: String,
-        lastName: String,
-        email: String,
-        password: String,
-        dob: String,
-        phone: String,
-        hash: String,
-        salt: String,
 });
 
-LogSchema.methods.setPassword = async function(password) {
+userSchema.methods.setPassword = async function(password) {
         let saltRound = 10;
         try {
                 let a = await bcrypt.genSalt(saltRound);
                 return await bcrypt.hash(password, a);
-
         } catch (e) {
                 return e;
         }
 };
 
-LogSchema.methods.comparePassword = async function(password) {
-        let saltRound = 10;
-        try {
-                let a = await bcrypt.genSalt(saltRound);
-                let b = await bcrypt.hash(password, a);
-                return password == b;
-
-        } catch (e) {
-                return e;
-        }
-
-}
+// LogSchema.methods.comparePassword = async function(password) {
+//         let saltRound = 10;
+//         try {
+//                 let a = await bcrypt.genSalt(saltRound);
+//                 let b = await bcrypt.hash(password, a);
+//                 return password == b;
+//
+//         } catch (e) {
+//                 return e;
+//         }
+//
+// }
 
 // LogSchema.methods.reversePassword = function () {
 //         return this.password.split("").reverse().join("");
@@ -81,5 +91,5 @@ LogSchema.methods.comparePassword = async function(password) {
 
 
 
-const Model = mongoose.model('LogSchema', LogSchema);
+const Model = mongoose.model('UserSchema', userSchema);
 module.exports = Model;

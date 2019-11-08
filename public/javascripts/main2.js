@@ -5,19 +5,16 @@ document.querySelector("#log_btn").addEventListener("click", function (e) {
         e.preventDefault();
         console.log("Click");
         // получаем данные формы
-        let logName = document.querySelector('#log_name').value;
+        let logEmail = document.querySelector('#log_email').value;
         let logPwd = document.querySelector('#log_pwd').value;
         // let direction = JSON.stringify({way});
 
         let formLogin= {
-            firstName:logName,
+            email:logEmail,
             password:logPwd,
         };
-        console.log(logName+'OOOO');
-        console.log(logPwd+'OOOO');
-        console.log(formLogin+'OOOO');
 
-        fetch('/users/login', {
+        fetch('/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
