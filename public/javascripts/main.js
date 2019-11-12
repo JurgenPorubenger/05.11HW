@@ -30,7 +30,6 @@ document.querySelector("#reg_btn").addEventListener("click", function (e) {
                 }
             })
             .then(result=>{
-                // localStorage.setItem('result', result);
                 console.log(result)
             })
             .catch(function(err) {
