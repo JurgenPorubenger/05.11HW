@@ -2,16 +2,26 @@ const jwt = require('jsonwebtoken');
 
 
 module.exports =  function auth (req, res, next) {
-    const token = req.header('auth-token');
-    console.log(token+'TOKEN');
-    if(!token) return res.status(401).send('Access Denied');
-    console.log(token+'TOKEN9999');
-    jwt.verify(token, process.env.TOKEN_SECRET, function(err, decoded) {
+    const access_token = req.cookies['access_token'];
+    const refresh_token = req.cookies['refresh_token'];
+    if(!access_token&&!refresh_token) {
+        return res.status(401).send('Need Login');
+    }
+    if(!access_token&&refresh_token){
+        jwt.verify(refresh_token, process.env.TOKEN_SECRET, function(err, decoded) {
+            if (err) {
+                console.log(err);
+                res.status(400).json('Invalid Token')
+            }
+            req.user = decoded;
+            next()
+        });
+    }
+    jwt.verify(access_token, process.env.TOKEN_SECRET, function(err, decoded) {
         if (err) {
             console.log(err);
             res.status(400).json('Invalid Token')
         }
-        console.log(decoded);
         req.user = decoded;
         next()
     });

@@ -28,7 +28,7 @@ document.querySelector("#log_btn").addEventListener("click", function (e) {
             })
             .then(result=>{
                 localStorage.setItem('auth-token', result);
-                console.log(result+'31')
+                console.log(result)
             })
             .catch(function(err) {
                 console.log('Fetch Error :-S', err);

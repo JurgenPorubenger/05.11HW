@@ -55,8 +55,23 @@ router.post('/login', async function(req, res, next) {
     const validPassword = await bcrypt.compare(password, userExist.password);
     if(!validPassword) return res.status(400).send('Invalid password');
 
-    const token = await jwt.sign({_id: userExist.id}, process.env.TOKEN_SECRET);
-    await res.header('auth-token', token).json(token);
+    const accessToken = await jwt.sign({
+        _id: userExist.id
+    }, process.env.TOKEN_SECRET,{ expiresIn: 60 * 60 });
+    const refreshToken = await jwt.sign({
+        _id: userExist.id
+    }, process.env.TOKEN_SECRET,{ expiresIn: 180 * 60 });
+
+    res//.clearCookie('access_token').send('ok')
+        .status(201)
+        .cookie('access_token', accessToken, {
+            expires: new Date(Date.now() + 2 * 3600000) // cookie will be removed after 8 hours
+        })
+        .cookie('refresh_token', refreshToken, {
+            expires: new Date(Date.now() + 48 * 3600000) // cookie will be removed after 8 hours
+        })
+        .send('ok')
+        // res.header('token', JSON.stringify(tokenObj)).send(tokenObj);
 });
 
 

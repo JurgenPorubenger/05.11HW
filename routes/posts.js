@@ -1,11 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const verify= require('./verifyToken');
 
 
 router.post('/', verify, async function(req, res, next) {
-    console.log(req.body)
-    res.send(req.user)
+    res.send(JSON.stringify(req.user))
     // res.json(JSON.stringify(req.body));
 });
 
